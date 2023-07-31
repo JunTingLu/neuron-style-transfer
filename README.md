@@ -1,4 +1,4 @@
-﻿# neuron-style-transfer
+﻿# Neuron-Style-Transfer
 圖像轉換(Style transfer)一直是個讓人感到新穎的主題，本文利用CNN(Convolutional Neural Networks)的方式進行圖片的風格轉換，並藉由調整參數來決定原圖像與轉換風格後的相似程度，細節將在本文陸續說明，這裡分享自己實作上的過程與結果
 
 ### 簡介
