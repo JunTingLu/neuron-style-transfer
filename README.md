@@ -8,8 +8,7 @@
 ### 技術與原理
 > 整個模型的主要核心在於如何體取出圖像中的content和style的特徵，接著透過增加圖像預處理(image preprocessing)，以及嘗試不同的模型架構、learning rate的選擇、調整loss參數達到最佳的合成效果
 
-![](https://miro.medium.com/v2/resize:fit:720/format:webp/1*p15iAAgqiCyVAbi4msgfeQ.png)
-(引用自參考資料[3])
+![](https://miro.medium.com/v2/resize:fit:720/format:webp/1*p15iAAgqiCyVAbi4msgfeQ.png)(引用自參考資料[3])
 
 **圖像預處理**
 > 這裡嘗試先將圖像進行縮放和歸一化，使用pytorch中的transform套件進行縮放，並轉為tensor的形式，接著在image 的部分即是將原圖像套用到transform定義好的縮放方式，並從原來的(512,512,3)轉成(1,512,512,3)的四維向量，目的是為了方便後續進行特徵(features)的堆疊。
@@ -67,8 +66,7 @@ return content_l
 > 在計算圖像的style時，必須先計算圖像本身的特徵相似性(similarity)，源於以下概念，當考慮任意兩向量在同一坐標系下的相關性時，可透過計算向量的內積來知道，當兩向量成90度時，內積為零，意味此兩向量彼此毫無相關。
 - Cosine similarity(餘弦相似)
 
-![](https://miro.medium.com/v2/resize:fit:490/format:webp/1*H1UW3bwrhqkRUJ11Xg6gGA.png)
-(引用自參考資料[1])
+![](https://miro.medium.com/v2/resize:fit:490/format:webp/1*H1UW3bwrhqkRUJ11Xg6gGA.png)(引用自參考資料[1])
 
 - Gram matrix
 > 將上述提及的cosine similarity推廣到圖像處理，相當於進一步計算圖像的特徵相關性分布，而這個分布形成的二維方陣稱作格拉姆矩陣(Gram matrix)，細節可參考[6]
@@ -86,7 +84,9 @@ return content_l
 
 **Total Loss計算**
 > 為了讓合成的圖樣產生最佳的效果，勢必在content loss和style loss間須取得平衡，因此分別引入α和β作為決定合成圖像中content 和style的成分多寡，在求解total loss 的最佳解過程採用梯度下降法(Gradient descent)搭配Adam優化器實現。
+
 ![](https://miro.medium.com/v2/resize:fit:640/format:webp/1*39DOPiFLq8TcncxuLKro7Q.png)
+
 代碼如下:
 ```
 def calculate_loss(gen_features, orig_feautes, style_featues):
