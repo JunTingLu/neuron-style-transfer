@@ -110,7 +110,7 @@ return total_loss
 
 
 
-最後，完整代碼可參考操考資料[5]，歡迎互相交流，不吝指教~
+PS.完整代碼可參考操考資料[5]
 
 ### 參考資料
 > 1. [Neural Networks Intuitions](https://towardsdatascience.com/neural-networks-intuitions-2-dot-product-gram-matrix-and-neural-style-transfer-5d39653e7916)
