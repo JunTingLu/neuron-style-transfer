@@ -7,6 +7,7 @@ import torch.optim as optim
 from torchvision.utils import save_image
 import matplotlib.pyplot as plt
 from tensorboardX import SummaryWriter
+import matplotlib.pyplot as plt
 
 
 #Loadung the model vgg19 that will serve as the base model
@@ -85,8 +86,13 @@ style_image=image_loader('..input/style.jpg')
 
 #Creating the generated image from the original image (copy 原圖)
 generated_image=original_image.clone().requires_grad_(True)
-# 原圖片加入random noise (initialization, for ex:white or gaussian)
 
+# 原圖片加入random noise (initialization, for ex:white or gaussian)
+def gaussian_noise(image_tensor,mean=0,std=1):
+    noise=torch.randn_like(image_tensor)*std+mean
+    # clamp返回新的張量，且限制張量中的min/max在0-255
+    noisy_img=image_tensor+noise
+    return noisy_img
 
 
 def calc_content_loss(gen_feat,orig_feat):
@@ -94,16 +100,14 @@ def calc_content_loss(gen_feat,orig_feat):
     content_l=torch.mean((gen_feat-orig_feat)**2) #*0.5
     return content_l
 
-def calc_style_loss(gen,style):
-    #Calculating the gram matrix for the style and the generated image
-    batch_size,channel,height,width=gen.shape
 
+def calc_style_loss(gen,style):
+    channel,height,width=gen.shape
     G=torch.mm(gen.view(channel,height*width),gen.view(channel,height*width).t())
-    A=torch.mm(style.view(channel,height*width),style.view(channel,height*width).t())
-        
-    #Calcultating the style loss of each layer by calculating the MSE between the gram matrix of the style image and the generated image and adding it to style loss
-    style_l=torch.mean((G-A)**2) #/(4*channel*(height*width)**2)
+    A=torch.mm(style.view(channel,height*width),style.view(channel,height*width).t())    
+    style_l=torch.mean((G-A)**2)
     return style_l
+
 
 def calculate_loss(gen_features, orig_feautes, style_featues):
     style_loss=content_loss=0
