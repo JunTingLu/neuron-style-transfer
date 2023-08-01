@@ -1,3 +1,4 @@
+# Image Style Transfer
 圖像轉換(Style transfer)一直是個讓人感到新穎的主題，本文利用CNN(Convolutional Neural Networks)的方式進行圖片的風格轉換，並藉由調整參數來決定原圖像與轉換風格後的相似程度，細節將在本文陸續說明，這裡分享自己實作上的過程與結果
 
 ### 簡介
@@ -36,21 +37,21 @@ def image_loader(path,is_cuda=False):
 ```
 class VGG(nn.Module):
 def __init__(self,is_cuda):
-self.is_cuda=is_cuda
-super(VGG,self).__init__()
-self.req_features= ['0','5','10','19','28'] 
-self.model=models.vgg19(pretrained=True).features[:29] 
+    self.is_cuda=is_cuda
+    super(VGG,self).__init__()
+    self.req_features= ['0','5','10','19','28'] 
+    self.model=models.vgg19(pretrained=True).features[:29] 
 
 def forward(self,x):
-features=[]
-#Iterate over all the layers of the mode
-for layer_num,layer in enumerate(self.model):
-#activation of the layer will stored in x
-x=layer(x)
-#appending the activation of the selected layers and return the feature array
-if (str(layer_num) in self.req_features):
-features.append(x)             
-return features
+    features=[]
+    #Iterate over all the layers of the mode
+    for layer_num,layer in enumerate(self.model):
+    #activation of the layer will stored in x
+    x=layer(x)
+    #appending the activation of the selected layers and return the feature array
+    if (str(layer_num) in self.req_features):
+    features.append(x)             
+    return features
 ```
 
 **Content features**
@@ -64,8 +65,8 @@ return features
 實作代碼如下:
 ```
 def calc_content_loss(gen_feat,orig_feat):
-content_l=torch.mean((gen_feat-orig_feat)**2) #*0.5
-return content_l
+    content_l=torch.mean((gen_feat-orig_feat)**2) #*0.5
+    return content_l
 ```
 
 
@@ -89,9 +90,6 @@ return content_l
 
 > ![](https://ithelp.ithome.com.tw/upload/images/20230731/20158010ap1TLwzCOk.png)
 
-代碼如下:
-
-
 **Total Loss計算**
 > 為了讓合成的圖樣產生最佳的效果，勢必在content loss和style loss間須取得平衡，因此分別引入α和β作為決定合成圖像中content 和style的成分多寡，在求解total loss 的最佳解過程採用梯度下降法(Gradient descent)搭配Adam優化器實現。
 
@@ -100,12 +98,12 @@ return content_l
 代碼如下:
 ```
 def calculate_loss(gen_features, orig_feautes, style_featues):
-style_loss=content_loss=0
-for gen,cont,style in zip(gen_features,orig_feautes,style_featues):
-content_loss+=calc_content_loss(gen,cont)
-style_loss+=calc_style_loss(gen,style)
-total_loss=alpha*content_loss + beta*style_loss 
-return total_loss
+    style_loss=content_loss=0
+    for gen,cont,style in zip(gen_features,orig_feautes,style_featues):
+    content_loss+=calc_content_loss(gen,cont)
+    style_loss+=calc_style_loss(gen,style)
+    total_loss=alpha*content_loss + beta*style_loss 
+    return total_loss
 ```
 
 ### 結論與探討
