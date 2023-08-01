@@ -110,10 +110,9 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
 > 針對目前的結果來看，經過迭代更新1000次後，其實合成出來的圖象已經達到不錯的效果，從調整α和β的比例關係來決定原圖來自style的成分多寡，下圖展示了設置α*β=1e1,1e2,1e3,1e4
 
 
-![](https://ithelp.ithome.com.tw/upload/images/20230730/201580100j87fXAqGU.png)
 
 
-比較VGG和Resnet對於訓練上的差異，
+針對CNN比較VGG和Resnet對於訓練上的差異，
 這邊另外嘗試使用ResNet (細節可參考參考資料[2])網絡架構來看看會帶來什麼樣的變化，
 
 
