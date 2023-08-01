@@ -55,8 +55,6 @@ def forward(self,x):
 ```
 
 - **Content features**
-<br>
-Convolusion feature maps
 > 由於VGG卷積層能夠有效提取出各層特徵，並將圖像轉換為四維向量層層堆疊形成features map，接著進一步定義content loss為原圖與content image的均方誤差(MSE)，而這裡之所以採用MSE的理由是希望計算如下
 
 ![](https://miro.medium.com/v2/resize:fit:640/format:webp/1*PKnjB3bxzgg6yy0uOsljqw.png)
@@ -72,19 +70,16 @@ def calc_content_loss(gen_feat,orig_feat):
 
 
 - **Style features**
-<br>
-Cosine similarity(餘弦相似)
-> 在計算圖像的style時，必須先計算圖像本身的特徵相似性(similarity)，源於以下概念，當考慮任意兩向量在同一坐標系下的相關性時，可透過計算向量的內積來知道，當兩向量成90度時，內積為零，意味此兩向量彼此毫無相關。
+> 在計算圖像的style時，必須先計算圖像本身的餘弦相似性(Cosine similarity)，源於以下概念，當考慮任意兩向量在同一坐標系下的相關性時，可透過計算向量的內積來知道，當兩向量成90度時，內積為零，意味此兩向量彼此毫無相關。
 
 ![](https://miro.medium.com/v2/resize:fit:490/format:webp/1*H1UW3bwrhqkRUJ11Xg6gGA.png)
 (引用自參考資料[1])
 
-- Gram matrix
 ![](https://ithelp.ithome.com.tw/upload/images/20230731/20158010TDpRsRF5Mt.png)
 (引用自參考資料[7])
 
 > 將上述提及的cosine similarity推廣到圖像處理，相當於進一步計算圖像的特徵相關性分布，而這個分布形成的二維方陣稱作格拉姆矩陣(Gram matrix)，細節可參考[6]
-> 這裡提到的gram matrix是指針對圖像在不同通道、像素下(nw,nh,nc)進行相關性(correlation)的計算，也就是說從gram matrix中的數值大小，能夠看出合成圖和原圖在那些特徵的關係強弱，具體公式如下
+> 這裡提到的gram matrix是指針對圖像在不同通道、像素下(nw,nh,nc)進行相關性(correlation)的計算，也就是說從Gram matrix中的數值大小，能夠看出合成圖和原圖在那些特徵的關係強弱，具體公式如下
 
 ![](https://miro.medium.com/v2/resize:fit:518/format:webp/1*C3fkQanKHMwOi_rf0q0OQQ.png)
 
