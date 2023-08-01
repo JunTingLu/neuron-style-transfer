@@ -21,7 +21,8 @@
 
 ```
 def image_loader(path,is_cuda=False):
-    image=Image.open(path)        loader=transforms.Compose([transforms.Resize((512,512)),transforms.ToTensor()])
+    image=Image.open(path)
+    loader=transforms.Compose([transforms.Resize((512,512)),transforms.ToTensor()])
     image=loader(image).unsqueeze(0)
     return image.to(device,torch.float)
 ```
@@ -76,7 +77,7 @@ return content_l
 (引用自參考資料[1])
 
 - Gram matrix
-![https://ithelp.ithome.com.tw/upload/images/20230731/20158010TDpRsRF5Mt.png](https://ithelp.ithome.com.tw/upload/images/20230731/20158010TDpRsRF5Mt.png)
+![](https://ithelp.ithome.com.tw/upload/images/20230731/20158010TDpRsRF5Mt.png)
 (引用自參考資料[7])
 
 > 將上述提及的cosine similarity推廣到圖像處理，相當於進一步計算圖像的特徵相關性分布，而這個分布形成的二維方陣稱作格拉姆矩陣(Gram matrix)，細節可參考[6]
@@ -86,11 +87,10 @@ return content_l
 
 > 對於style loss 的計算，同樣計算和原圖的均方誤差(MSE)估算變異量。代碼中使用torch.mm 將先前每一層所儲存的feature map進行矩陣相乘運算
 
-> ![https://ithelp.ithome.com.tw/upload/images/20230731/20158010ap1TLwzCOk.png](https://ithelp.ithome.com.tw/upload/images/20230731/20158010ap1TLwzCOk.png)
+> ![](https://ithelp.ithome.com.tw/upload/images/20230731/20158010ap1TLwzCOk.png)
 
 代碼如下:
 
-![https://ithelp.ithome.com.tw/upload/images/20230731/20158010kBpuGgkwkp.png](https://ithelp.ithome.com.tw/upload/images/20230731/20158010kBpuGgkwkp.png)
 
 **Total Loss計算**
 > 為了讓合成的圖樣產生最佳的效果，勢必在content loss和style loss間須取得平衡，因此分別引入α和β作為決定合成圖像中content 和style的成分多寡，在求解total loss 的最佳解過程採用梯度下降法(Gradient descent)搭配Adam優化器實現。
