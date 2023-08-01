@@ -27,7 +27,7 @@ def image_loader(path,is_cuda=False):
 ```
 
 **模型架構**
-> 首先從模型架構來說，我採用VGG19的預訓練(pre-training)模型，以加快模型收斂時間，我只保留VGG前29層，其中會使用到的五個的filter，去輸出的圖像並依序取出features並存在feature box中，直觀上可以想像為了讓機器學會辨識一張圖像的特徵(例如:紋理、邊緣等等資訊)，在VGG模型中透過不同層濾波器(filter)所產生的不同特徵圖，又稱為feature map，而feature box就是收集這些feature map的過程。如下示意圖
+> 首先從模型架構來說，我採用VGG19的預訓練(pre-training)模型，直接利用前一大段的CNN架構來加快模型收斂時間。這裡只保留VGG前29層，其中會使用到的五個的filter，去輸出的圖像並依序取出features並存在feature box中，直觀上可以想像為了讓機器學會辨識一張圖像的特徵(例如:紋理、邊緣等等資訊)，在VGG模型中透過不同層濾波器(filter)所產生的不同特徵圖，又稱為feature map，而feature box就是收集這些feature map的過程。如下示意圖
 
 ![](https://upscfever.com/upsc-fever/en/data/deeplearning4/images/NST_LOSS.png)
 (引用自參考資料[4])
