@@ -76,7 +76,9 @@ def calc_content_loss(gen_feat,orig_feat):
 (引用自參考資料[1])
 
 ![](https://ithelp.ithome.com.tw/upload/images/20230731/20158010TDpRsRF5Mt.png)
+<br>
 (引用自參考資料[7])
+
 
 > 將上述提及的cosine similarity推廣到圖像處理，相當於進一步計算圖像的特徵相關性分布，而這個分布形成的二維方陣稱作格拉姆矩陣(Gram matrix)，細節可參考[6]
 > 這裡提到的gram matrix是指針對圖像在不同通道、像素下(nw,nh,nc)進行相關性(correlation)的計算，也就是說從Gram matrix中的數值大小，能夠看出合成圖和原圖在那些特徵的關係強弱，具體公式如下
