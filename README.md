@@ -70,7 +70,7 @@ def calc_content_loss(gen_feat,orig_feat):
 
 
 - ## **Style features**
-> 在計算圖像的style時，必須先計算圖像本身的餘弦相似性(Cosine similarity)，源於以下概念，當考慮任意兩向量在同一坐標系下的相關性時，可透過計算向量的內積來知道，當兩向量成90度時，內積為零，意味此兩向量彼此毫無相關。
+> 在計算圖像的style時，採用餘弦相似性(Cosine similarity)來計算圖像本身的"相似性"，若將圖像的各特徵向量化後，那麼要評估任意向量間的相似度會變得非常有用。因此，當考慮任意兩向量在向量空間中，可透過計算向量的內積來知道，當兩向量成90度時，內積為零，意味此兩向量彼此毫無相關。
 
 ![](https://miro.medium.com/v2/resize:fit:490/format:webp/1*H1UW3bwrhqkRUJ11Xg6gGA.png)
 (引用自參考資料[1])
