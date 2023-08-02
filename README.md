@@ -75,9 +75,7 @@ def calc_content_loss(gen_feat,orig_feat):
 ![](https://miro.medium.com/v2/resize:fit:490/format:webp/1*H1UW3bwrhqkRUJ11Xg6gGA.png)
 (引用自參考資料[1])
 
-![](https://ithelp.ithome.com.tw/upload/images/20230731/20158010TDpRsRF5Mt.png)
-<br>
-(引用自參考資料[7])
+![](https://ithelp.ithome.com.tw/upload/images/20230731/20158010TDpRsRF5Mt.png)(引用自參考資料[7])
 
 
 > 將上述提及的cosine similarity推廣到圖像處理，相當於進一步計算圖像的特徵相關性分布，而這個分布形成的二維方陣稱作格拉姆矩陣(Gram matrix)，細節可參考[6]
@@ -105,14 +103,9 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
     return total_loss
 ```
 
-### 結論與探討
-> 針對目前的結果來看，經過迭代更新1000次後，其實合成出來的圖象已經達到不錯的效果，從調整α和β的比例關係來決定原圖來自style的成分多寡，下圖展示了設置 α*β=(1e1,1e2,1e3,1e4)
+> 針對目前的結果來看，經過迭代更新1000次後，其實合成出來的圖象已經達到不錯的效果，從調整α和β的比例關係來決定原圖來自style的成分多寡，下圖展示了設置 α=1 β=10 的風格圖
 
-
-
-
-針對CNN比較VGG和Resnet對於訓練上的差異，
-這邊另外嘗試使用ResNet (細節可參考參考資料[2])網絡架構來看看會帶來什麼樣的變化，
+![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/896620a7-4658-463e-81a5-8effc7661a77)
 
 
 
