@@ -94,7 +94,7 @@ def calc_content_loss(gen_feat,orig_feat):
 
 ![](https://miro.medium.com/v2/resize:fit:640/format:webp/1*39DOPiFLq8TcncxuLKro7Q.png)
 
-代碼如下:
+代碼中首先初始化loss後，去進一步原圖分別和content/style image的差異，最初由於
 ```
 def calculate_loss(gen_features, orig_feautes, style_featues):
     style_loss=content_loss=0
