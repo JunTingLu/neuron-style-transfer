@@ -108,6 +108,11 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
 ![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/896620a7-4658-463e-81a5-8effc7661a77)
 
 
+## 結果與討論
+1.使用Resnet 來取代vgg
+2.使用Instance Normalization取代batch normalization
+3.
+
 
 最後，完整代碼可參考操考資料[5]，歡迎互相交流，不吝指教~
 
