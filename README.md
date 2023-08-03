@@ -13,12 +13,6 @@
 
 - ## **圖像預處理**
 > 這裡嘗試先將圖像進行縮放和歸一化，使用pytorch中的transform套件進行縮放，並轉為tensor的形式，接著在image 的部分即是將原圖像套用到transform定義好的縮放方式，並從原來的(512,512,3)在第0維上新增一個維度，形成(1,512,512,3)的四維向量，目的是為了方便後續進行特徵(features)的堆疊。另外這裡的(512,512,3)分別代表圖像的512x512的像素及RGB三顏色(通道數)。
-> 加入高斯噪聲後
-
-
-
-
-
 
 ```
 def image_loader(path,is_cuda=False):
@@ -104,19 +98,9 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
 ```
 
 ## 結果與討論
-> 為了加速訓練，使用VGG19 pre-training model過程中的參數不更新，經過迭代更新1000次後，其實合成出來的圖象已經達到不錯的效果，從調整α和β的權重來決定原圖偏向style的程度，下圖展示了設置不同 α和β的組合下產生的風格圖
+> 為了加速訓練，使用VGG19 pre-training model過程中的參數不更新，經過迭代更新200次後，其實合成出來的圖象已經達到不錯的效果，從調整α和β的權重來決定原圖偏向style的程度，下圖展示了設置不同α/β=0.01 下產生的風格圖
 
-
-
-
-
-1.使用Resnet 來取代vgg
-2.使用Instance Normalization取代batch normalization
-3.ratio α/β 
-
-
-
-
+![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/2695cd1b-6978-4549-825f-b7966cdb1478)
 
 
 最後，完整代碼可參考操考資料[5]，歡迎互相交流，不吝指教~
