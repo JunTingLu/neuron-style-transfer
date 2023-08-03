@@ -1,3 +1,0 @@
-
-177 tensor(223158.1562, device='cuda:0', grad_fn=<AddBackward0>)
-Time taken: 98.70958 seconds

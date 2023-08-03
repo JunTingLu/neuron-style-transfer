@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "c:\Users\User\Desktop\python_jupyter\for_job\NST\dl_wandb.py", line 85, in <module>
-    total_loss.backward()
-AttributeError: 'float' object has no attribute 'backward'

@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "c:\Users\User\Desktop\python_jupyter\for_job\NST\dl_wandb.py", line 88, in <module>
-    total_loss=calculate_loss(gen_features, orig_features, style_features)
-  File "c:\Users\User\Desktop\python_jupyter\for_job\NST\utils.py", line 29, in calculate_loss
-    total_loss=alpha*content_loss + beta*style_loss
-NameError: name 'alpha' is not defined
