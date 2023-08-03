@@ -126,6 +126,6 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
 > 2. [Deep Residual Learning for Image Recognition](https://arxiv.org/pdf/1512.03385.pdf)
 > 3. [A Neural Algorithm of Artistic Style](https://arxiv.org/pdf/1508.06576.pdf)
 > 4. [Deep Learning & Art: Neural Style Transfer](https://upscfever.com/upsc-fever/en/data/deeplearning4/Art+Generation+with+Neural+Style+Transfer+-+v2.html)
-> 5. [github](https://github.com/JunTingLu/neuron-style-transfer/edit/main/README.md)
+> 5. [my_github](https://github.com/JunTingLu/neuron-style-transfer/edit/main/README.md)
 > 6. [Gram matrix](https://ccjou.wordpress.com/2011/03/07/%E7%89%B9%E6%AE%8A%E7%9F%A9%E9%99%A3-14%EF%BC%9Agramian-%E7%9F%A9%E9%99%A3/)
 > 7. [格拉姆矩阵（Gram matrix）详细解读](https://www.cnblogs.com/yifanrensheng/p/12862174.html)
