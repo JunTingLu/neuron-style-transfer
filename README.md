@@ -109,7 +109,7 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
 
 
 
-## 結果與討論
+
 1.使用Resnet 來取代vgg
 2.使用Instance Normalization取代batch normalization
 3.ratio α/β 
