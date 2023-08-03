@@ -70,7 +70,8 @@ def calc_content_loss(gen_feat,orig_feat):
 ![](https://miro.medium.com/v2/resize:fit:490/format:webp/1*H1UW3bwrhqkRUJ11Xg6gGA.png)
 (引用自參考資料[1])
 
-![](https://ithelp.ithome.com.tw/upload/images/20230731/20158010TDpRsRF5Mt.png)(引用自參考資料[7])
+![](https://ithelp.ithome.com.tw/upload/images/20230731/20158010TDpRsRF5Mt.png)
+(引用自參考資料[7])
 
 
 > 將上述提及的cosine similarity推廣到圖像處理，相當於進一步計算圖像的特徵相關性分布，而這個分布形成的二維方陣稱作格拉姆矩陣(Gram matrix)，細節可參考[6]
