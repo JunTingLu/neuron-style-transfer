@@ -3,7 +3,7 @@
 
 ## 簡介
 > 圖像轉換(Style transfer)最早可追溯到2015年Gatys 等人所發表的 A Neural Algorithm of Artistic Style，
-> 他們所採用的方式是利用VGG(Visual Geometry Group)模型進行圖像的特徵提取，關鍵在於提取出來的特徵分為content 和 style features，所謂 content是指一張圖像的大致輪廓，而style是指圖像中更細節的資訊，因此只要將原圖像的content成分取出，搭配欲產生的風格照片之style進行結合，透過loss函數的設計在這兩著間達成平衡，便能合成出具有content和style成分的圖象。
+> 他們所採用的方式是利用VGG(Visual Geometry Group)模型進行圖像的特徵提取，關鍵在於提取出來的特徵分為content 和 style features，所謂 content是指一張圖像的大致輪廓，而style是指圖像中更細節的資訊(像是紋理、對比度、方向性等)，因此只要將原圖像的content成分取出，搭配欲產生的風格照片之style進行結合，透過loss函數的設計在這兩著間達成平衡，便能合成出具有content和style成分的圖象。
 
 ## 技術與原理
 > 整個模型的主要核心在於如何體取出圖像中的content和style的特徵，接著透過增加圖像預處理(image preprocessing)，以及嘗試不同的模型架構、learning rate的選擇、調整loss參數達到最佳的合成效果
@@ -13,12 +13,6 @@
 
 - ## **圖像預處理**
 > 這裡嘗試先將圖像進行縮放和歸一化，使用pytorch中的transform套件進行縮放，並轉為tensor的形式，接著在image 的部分即是將原圖像套用到transform定義好的縮放方式，並從原來的(512,512,3)在第0維上新增一個維度，形成(1,512,512,3)的四維向量，目的是為了方便後續進行特徵(features)的堆疊。另外這裡的(512,512,3)分別代表圖像的512x512的像素及RGB三顏色(通道數)。
-> 加入高斯噪聲後
-
-
-
-
-
 
 ```
 def image_loader(path,is_cuda=False):
@@ -29,29 +23,30 @@ def image_loader(path,is_cuda=False):
 ```
 
 - ## **模型架構**
-> 首先從模型架構來說，我採用VGG19的預訓練(pre-training)模型，直接利用前一大段的CNN架構來加快模型收斂時間。這裡只保留VGG前29層，其中會使用到的五個的filter，去輸出的圖像並依序取出features並存在feature box中，直觀上可以想像為了讓機器學會辨識一張圖像的特徵(例如:紋理、邊緣等等資訊)，在VGG模型中透過不同層濾波器(filter)所產生的不同特徵圖，又稱為feature map，而feature box就是收集這些feature map的過程。如下示意圖
+> 首先從模型架構來說，我採用VGG19的預訓練(pre-training)模型，直接利用前一大段的CNN架構來加快模型收斂時間。這裡只保留VGG前29層，其中會使用到的四層分別來自relu1_2,relu2_2,relu3_2,relu4_2提取特徵，原因是希望特徵在線性激活後更譨購抓出圖像中重要的部分，依序取出圖像的特徵(features)並存在feature box中，直觀上可以想像為了讓機器學會辨識一張圖像的特徵(例如:紋理、邊緣等等資訊)，在VGG模型中透過不同層濾波器(filter)所產生的不同特徵圖，又稱為feature map，而feature box就是收集這些feature map的過程。如下示意圖
 
 ![](https://upscfever.com/upsc-fever/en/data/deeplearning4/images/NST_LOSS.png)
 (引用自參考資料[4])
 
 ```
 class VGG(nn.Module):
-def __init__(self,is_cuda):
-    self.is_cuda=is_cuda
-    super(VGG,self).__init__()
-    self.req_features= ['0','5','10','19','28'] 
-    self.model=models.vgg19(pretrained=True).features[:29] 
-
-def forward(self,x):
-    features=[]
-    #Iterate over all the layers of the mode
-    for layer_num,layer in enumerate(self.model):
-    #activation of the layer will stored in x
-    x=layer(x)
-    #appending the activation of the selected layers and return the feature array
-    if (str(layer_num) in self.req_features):
-    features.append(x)             
-    return features
+    def __init__(self):
+        super(VGG,self).__init__()
+        self.layer_names= ['3','8','13','20'] 
+        #Since we need only the 5 layers in the model so we will be dropping all the rest layers from the features of the model
+        self.model=models.vgg19(pretrained=True).features[:29] #model will contain the first 29 layers       
+ 
+    # x holds the input tensor(image) that will be feeded to each layer
+    def forward(self,x):
+        features=[]
+        # features={}
+        for layer_num,layer in enumerate(self.model):
+            #activation of the layer will stored in x
+            x=layer(x)
+            #appending the activation of the selected layers and return the feature array
+            if (str(layer_num) in self.layer_names):
+                features.append(x)    
+        return features
 ```
 
 - ## **Content features**
@@ -87,6 +82,17 @@ def calc_content_loss(gen_feat,orig_feat):
 
 > ![](https://ithelp.ithome.com.tw/upload/images/20230731/20158010ap1TLwzCOk.png)
 
+代碼如下
+```
+def calc_style_loss(gen,style):
+    #Calculating the gram matrix for the style and the generated image
+    batch,channel,height,width=gen.shape
+    G=torch.mm(gen.view(channel,height*width),gen.view(channel,height*width).t())
+    A=torch.mm(style.view(channel,height*width),style.view(channel,height*width).t())
+    style_l=torch.mean((G-A)**2) #/(4*channel*(height*width)**2)
+    return style_l
+```
+
 - ## **Total Loss**
 > 為了讓合成的圖樣產生最佳的效果，勢必在content loss和style loss間須取得平衡，因此分別引入α和β作為決定合成圖像中content 和style的成分多寡，在求解total loss 的最佳解過程採用梯度下降法(Gradient descent)搭配Adam優化器實現。
 
@@ -104,19 +110,9 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
 ```
 
 ## 結果與討論
-> 為了加速訓練，使用VGG19 pre-training model過程中的參數不更新，經過迭代更新1000次後，其實合成出來的圖象已經達到不錯的效果，從調整α和β的比例關係來決定原圖來自style的成分多寡，下圖展示了設置 α=1 β=10 的風格圖
+> 為了加速訓練，使用VGG19 pre-training model過程中的參數不更新，經過迭代更新200次後，其實合成出來的圖象已經達到不錯的效果，從調整α和β的權重來決定原圖偏向style的程度，下圖展示了設置不同α/β=0.01 下產生的風格圖
 
-
-
-
-## 結果與討論
-1.使用Resnet 來取代vgg
-2.使用Instance Normalization取代batch normalization
-3.ratio α/β 
-
-
-
-
+![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/2695cd1b-6978-4549-825f-b7966cdb1478)
 
 
 最後，完整代碼可參考操考資料[5]，歡迎互相交流，不吝指教~
@@ -126,6 +122,6 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
 > 2. [Deep Residual Learning for Image Recognition](https://arxiv.org/pdf/1512.03385.pdf)
 > 3. [A Neural Algorithm of Artistic Style](https://arxiv.org/pdf/1508.06576.pdf)
 > 4. [Deep Learning & Art: Neural Style Transfer](https://upscfever.com/upsc-fever/en/data/deeplearning4/Art+Generation+with+Neural+Style+Transfer+-+v2.html)
-> 5. [github](https://github.com/JunTingLu/neuron-style-transfer/edit/main/README.md)
+> 5. [my_github](https://github.com/JunTingLu/neuron-style-transfer/edit/main/README.md)
 > 6. [Gram matrix](https://ccjou.wordpress.com/2011/03/07/%E7%89%B9%E6%AE%8A%E7%9F%A9%E9%99%A3-14%EF%BC%9Agramian-%E7%9F%A9%E9%99%A3/)
 > 7. [格拉姆矩阵（Gram matrix）详细解读](https://www.cnblogs.com/yifanrensheng/p/12862174.html)
