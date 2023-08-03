@@ -103,9 +103,10 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
     return total_loss
 ```
 
+## 結果與討論
 > 為了加速訓練，使用VGG19 pre-training model過程中的參數不更新，經過迭代更新1000次後，其實合成出來的圖象已經達到不錯的效果，從調整α和β的比例關係來決定原圖來自style的成分多寡，下圖展示了設置 α=1 β=10 的風格圖
 
-![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/896620a7-4658-463e-81a5-8effc7661a77)
+
 
 
 ## 結果與討論
