@@ -113,7 +113,8 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
 ## 結果與討論
 > 為了加速訓練，使用VGG19 pre-training model過程中的參數不更新，經過迭代更新200次後，其實合成出來的圖象已經達到不錯的效果，從調整α和β的權重來決定原圖偏向style的程度，下圖展示了設置不同α/β=0.01 下產生的風格圖
 
-![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/2695cd1b-6978-4549-825f-b7966cdb1478)
+![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/5672cdbe-c77b-42fa-af02-d6661b15e2c4)
+
 
 
 最後，完整代碼可參考操考資料[5]，歡迎互相交流，不吝指教~
