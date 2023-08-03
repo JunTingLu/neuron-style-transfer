@@ -111,7 +111,10 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
 ## 結果與討論
 1.使用Resnet 來取代vgg
 2.使用Instance Normalization取代batch normalization
-3.
+3.ratio α/β 
+4.tv loss
+
+
 
 
 最後，完整代碼可參考操考資料[5]，歡迎互相交流，不吝指教~
