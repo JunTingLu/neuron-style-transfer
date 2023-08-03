@@ -112,8 +112,19 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
 1.使用Resnet 來取代vgg
 2.使用Instance Normalization取代batch normalization
 3.ratio α/β 
-4.tv loss
 
+
+<table>
+<tr>
+<td>Origin</td><td>Style</td>><td>Transfered</td>
+</tr>
+<tr>
+<td>Origin</td><td>Style</td>><td>Transfered</td>
+</tr>
+<tr>
+<td>Origin</td><td>Style</td>><td>Transfered</td>
+</tr>
+</table>
 
 
 
