@@ -70,14 +70,12 @@ def calc_content_loss(gen_feat,orig_feat):
 
 
 - ## **Style features**
-> 在計算圖像的style時，必須先計算圖像本身的餘弦相似性(Cosine similarity)，源於以下概念，當考慮任意兩向量在同一坐標系下的相關性時，可透過計算向量的內積來知道，當兩向量成90度時，內積為零，意味此兩向量彼此毫無相關。
+> 在計算圖像的style時，採用餘弦相似性(Cosine similarity)來計算圖像本身的"相似性"，若將圖像的各特徵向量化後，那麼要評估任意向量間的相似度會變得非常有用。因此，當考慮任意兩向量在向量空間中，可透過計算向量的內積來知道，當兩向量成90度時，內積為零，意味此兩向量彼此毫無相關。
 
 ![](https://miro.medium.com/v2/resize:fit:490/format:webp/1*H1UW3bwrhqkRUJ11Xg6gGA.png)
 (引用自參考資料[1])
 
-![](https://ithelp.ithome.com.tw/upload/images/20230731/20158010TDpRsRF5Mt.png)
-<br>
-(引用自參考資料[7])
+![](https://ithelp.ithome.com.tw/upload/images/20230731/20158010TDpRsRF5Mt.png)(引用自參考資料[7])
 
 
 > 將上述提及的cosine similarity推廣到圖像處理，相當於進一步計算圖像的特徵相關性分布，而這個分布形成的二維方陣稱作格拉姆矩陣(Gram matrix)，細節可參考[6]
@@ -94,7 +92,7 @@ def calc_content_loss(gen_feat,orig_feat):
 
 ![](https://miro.medium.com/v2/resize:fit:640/format:webp/1*39DOPiFLq8TcncxuLKro7Q.png)
 
-代碼如下:
+代碼中首先初始化loss後，去進一步原圖分別和content/style image的差異，最初由於
 ```
 def calculate_loss(gen_features, orig_feautes, style_featues):
     style_loss=content_loss=0
@@ -105,14 +103,19 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
     return total_loss
 ```
 
-### 結論與探討
-> 針對目前的結果來看，經過迭代更新1000次後，其實合成出來的圖象已經達到不錯的效果，從調整α和β的比例關係來決定原圖來自style的成分多寡，下圖展示了設置 α*β=(1e1,1e2,1e3,1e4)
+## 結果與討論
+> 為了加速訓練，使用VGG19 pre-training model過程中的參數不更新，經過迭代更新1000次後，其實合成出來的圖象已經達到不錯的效果，從調整α和β的比例關係來決定原圖來自style的成分多寡，下圖展示了設置 α=1 β=10 的風格圖
 
 
 
 
-針對CNN比較VGG和Resnet對於訓練上的差異，
-這邊另外嘗試使用ResNet (細節可參考參考資料[2])網絡架構來看看會帶來什麼樣的變化，
+## 結果與討論
+1.使用Resnet 來取代vgg
+2.使用Instance Normalization取代batch normalization
+3.ratio α/β 
+
+
+
 
 
 
@@ -123,6 +126,6 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
 > 2. [Deep Residual Learning for Image Recognition](https://arxiv.org/pdf/1512.03385.pdf)
 > 3. [A Neural Algorithm of Artistic Style](https://arxiv.org/pdf/1508.06576.pdf)
 > 4. [Deep Learning & Art: Neural Style Transfer](https://upscfever.com/upsc-fever/en/data/deeplearning4/Art+Generation+with+Neural+Style+Transfer+-+v2.html)
-> 5. [github](http://)
+> 5. [github](https://github.com/JunTingLu/neuron-style-transfer/edit/main/README.md)
 > 6. [Gram matrix](https://ccjou.wordpress.com/2011/03/07/%E7%89%B9%E6%AE%8A%E7%9F%A9%E9%99%A3-14%EF%BC%9Agramian-%E7%9F%A9%E9%99%A3/)
 > 7. [格拉姆矩阵（Gram matrix）详细解读](https://www.cnblogs.com/yifanrensheng/p/12862174.html)
