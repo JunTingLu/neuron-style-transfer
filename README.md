@@ -30,22 +30,23 @@ def image_loader(path,is_cuda=False):
 
 ```
 class VGG(nn.Module):
-def __init__(self,is_cuda):
-    self.is_cuda=is_cuda
-    super(VGG,self).__init__()
-    self.req_features= ['0','5','10','19','28'] 
-    self.model=models.vgg19(pretrained=True).features[:29] 
-
-def forward(self,x):
-    features=[]
-    #Iterate over all the layers of the mode
-    for layer_num,layer in enumerate(self.model):
-    #activation of the layer will stored in x
-    x=layer(x)
-    #appending the activation of the selected layers and return the feature array
-    if (str(layer_num) in self.req_features):
-    features.append(x)             
-    return features
+    def __init__(self):
+        super(VGG,self).__init__()
+        self.layer_names= ['3','8','13','20'] 
+        #Since we need only the 5 layers in the model so we will be dropping all the rest layers from the features of the model
+        self.model=models.vgg19(pretrained=True).features[:29] #model will contain the first 29 layers       
+ 
+    # x holds the input tensor(image) that will be feeded to each layer
+    def forward(self,x):
+        features=[]
+        # features={}
+        for layer_num,layer in enumerate(self.model):
+            #activation of the layer will stored in x
+            x=layer(x)
+            #appending the activation of the selected layers and return the feature array
+            if (str(layer_num) in self.layer_names):
+                features.append(x)    
+        return features
 ```
 
 - ## **Content features**
@@ -80,6 +81,19 @@ def calc_content_loss(gen_feat,orig_feat):
 > 對於style loss 的計算，同樣計算和原圖的均方誤差(MSE)估算變異量。代碼中使用torch.mm 將先前每一層所儲存的feature map進行矩陣相乘運算
 
 > ![](https://ithelp.ithome.com.tw/upload/images/20230731/20158010ap1TLwzCOk.png)
+
+代碼如下
+```
+def calc_style_loss(gen,style):
+    #Calculating the gram matrix for the style and the generated image
+    batch,channel,height,width=gen.shape
+    G=torch.mm(gen.view(channel,height*width),gen.view(channel,height*width).t())
+    A=torch.mm(style.view(channel,height*width),style.view(channel,height*width).t())
+    #Calcultating the style loss of each layer by calculating the MSE between the gram matrix of the style image and the generated image and adding it to style loss
+    style_l=torch.mean((G-A)**2) #/(4*channel*(height*width)**2)
+    # style_l=((G-A)**2)/(channel*height*width)
+    return style_l
+```
 
 - ## **Total Loss**
 > 為了讓合成的圖樣產生最佳的效果，勢必在content loss和style loss間須取得平衡，因此分別引入α和β作為決定合成圖像中content 和style的成分多寡，在求解total loss 的最佳解過程採用梯度下降法(Gradient descent)搭配Adam優化器實現。
