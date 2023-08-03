@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "c:\Users\User\Desktop\python_jupyter\for_job\NST\dl_wandb.py", line 83, in <module>
+    total_loss=calculate_loss(gen_features, orig_features, style_features)
+  File "c:\Users\User\Desktop\python_jupyter\for_job\NST\utils.py", line 34, in calculate_loss
+    style_loss+=calc_style_loss(gen,style)
+RuntimeError: The size of tensor a (64) must match the size of tensor b (128) at non-singleton dimension 1

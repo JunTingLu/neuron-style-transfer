@@ -1,0 +1,50 @@
+{
+    "os": "Windows-10-10.0.22621-SP0",
+    "python": "3.9.16",
+    "heartbeatAt": "2023-08-03T12:15:49.828238",
+    "startedAt": "2023-08-03T12:15:47.106608",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "c:\\Users\\User\\Desktop\\python_jupyter\\for_job\\NST\\dl_wandb.py",
+    "codePath": "dl_wandb.py",
+    "git": {
+        "remote": "git@github.com:JunTingLu/neuron-style-transfer.git",
+        "commit": "9554ed0669b87c6931a2bc97a6533a9894b75d06"
+    },
+    "email": "juntinglu84@gmail.com",
+    "root": "C:/Users/User/Desktop/python_jupyter/for_job/NST",
+    "host": "MSI",
+    "username": "User",
+    "executable": "C:\\Users\\User\\anaconda3\\envs\\cuda_11.0\\python.exe",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 2200.0,
+        "min": 0.0,
+        "max": 2201.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2200.0,
+            "min": 0.0,
+            "max": 2201.0
+        }
+    ],
+    "disk": {
+        "total": 237.17675399780273,
+        "used": 220.13101196289062
+    },
+    "gpu": "NVIDIA GeForce GTX 1050 Ti",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce GTX 1050 Ti",
+            "memory_total": 4294967296
+        }
+    ],
+    "memory": {
+        "total": 7.850212097167969
+    }
+}

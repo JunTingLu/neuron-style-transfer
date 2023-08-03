@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "c:\Users\User\Desktop\python_jupyter\for_job\NST\dl_wandb.py", line 62, in <module>
+    original_image=image_loader("input/constent/Sakura.jpg")
+  File "c:\Users\User\Desktop\python_jupyter\for_job\NST\dl_wandb.py", line 27, in image_loader
+    image=Image.open(path)
+  File "C:\Users\User\anaconda3\envs\cuda_11.0\lib\site-packages\PIL\Image.py", line 3236, in open
+    fp = builtins.open(filename, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: 'input/constent/Sakura.jpg'

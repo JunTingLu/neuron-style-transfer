@@ -1,0 +1,21 @@
+177 tensor(3.0865e+09, device='cuda:0', grad_fn=<AddBackward0>)
+Time taken: 93.01889 seconds
+Traceback (most recent call last):
+  File "C:\Users\User\anaconda3\envs\cuda_11.0\lib\site-packages\torch\serialization.py", line 308, in _check_seekable
+    f.seek(f.tell())
+AttributeError: 'collections.OrderedDict' object has no attribute 'seek'
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "c:\Users\User\Desktop\python_jupyter\for_job\NST\test.py", line 9, in <module>
+    torch.load(model.state_dict(), f)
+  File "C:\Users\User\anaconda3\envs\cuda_11.0\lib\site-packages\torch\serialization.py", line 581, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "C:\Users\User\anaconda3\envs\cuda_11.0\lib\site-packages\torch\serialization.py", line 235, in _open_file_like
+    return _open_buffer_reader(name_or_buffer)
+  File "C:\Users\User\anaconda3\envs\cuda_11.0\lib\site-packages\torch\serialization.py", line 220, in __init__
+    _check_seekable(buffer)
+  File "C:\Users\User\anaconda3\envs\cuda_11.0\lib\site-packages\torch\serialization.py", line 311, in _check_seekable
+    raise_err_msg(["seek", "tell"], e)
+  File "C:\Users\User\anaconda3\envs\cuda_11.0\lib\site-packages\torch\serialization.py", line 304, in raise_err_msg
+    raise type(e)(msg)
+AttributeError: 'collections.OrderedDict' object has no attribute 'seek'. You can only torch.load from a file that is seekable. Please pre-load the data into a buffer like io.BytesIO and try to load from it instead.

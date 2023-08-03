@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "c:\Users\User\Desktop\python_jupyter\for_job\NST\dl_wandb.py", line 83, in <module>
+    gen_features=model(generated_image)
+  File "C:\Users\User\anaconda3\envs\cuda_11.0\lib\site-packages\torch\nn\modules\module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "c:\Users\User\Desktop\python_jupyter\for_job\NST\network.py", line 40, in forward
+    return vggoutput(**features)
+TypeError: <lambda>() missing 4 required positional arguments: 'relu1_2', 'relu2_2', 'relu3_2', and 'relu4_2'
