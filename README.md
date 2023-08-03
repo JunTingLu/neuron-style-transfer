@@ -116,13 +116,23 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
 
 <table>
 <tr>
-<td>Origin</td><td>Style</td>><td>Transfered</td>
+    <td>Origin</td><td>Style</td>><td>Transfered</td>
 </tr>
 <tr>
-<td>Origin</td><td>Style</td>><td>Transfered</td>
+    <td> ![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/457ca5e8-af3b-4fdf-a267-c2b25519bf85)</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-<td>Origin</td><td>Style</td>><td>Transfered</td>
+    <td>![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/22dd66ba-eebd-4004-8156-15c108976c4a)</td>
+    <td></td>
+    <td></td>
+</tr>
+    <tr>
+    <td>![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/04578727-a422-417d-ac81-deaded682bff)
+</td>
+    <td></td>
+    <td></td>
 </tr>
 </table>
 
