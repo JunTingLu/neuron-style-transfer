@@ -3,7 +3,7 @@
 
 ## 簡介
 > 圖像轉換(Style transfer)最早可追溯到2015年Gatys 等人所發表的 A Neural Algorithm of Artistic Style，
-> 他們所採用的方式是利用VGG(Visual Geometry Group)模型進行圖像的特徵提取，關鍵在於提取出來的特徵分為content 和 style features，所謂 content是指一張圖像的大致輪廓，而style是指圖像中更細節的資訊，因此只要將原圖像的content成分取出，搭配欲產生的風格照片之style進行結合，透過loss函數的設計在這兩著間達成平衡，便能合成出具有content和style成分的圖象。
+> 他們所採用的方式是利用VGG(Visual Geometry Group)模型進行圖像的特徵提取，關鍵在於提取出來的特徵分為content 和 style features，所謂 content是指一張圖像的大致輪廓，而style是指圖像中更細節的資訊(像是紋理、對比度、方向性等)，因此只要將原圖像的content成分取出，搭配欲產生的風格照片之style進行結合，透過loss函數的設計在這兩著間達成平衡，便能合成出具有content和style成分的圖象。
 
 ## 技術與原理
 > 整個模型的主要核心在於如何體取出圖像中的content和style的特徵，接著透過增加圖像預處理(image preprocessing)，以及嘗試不同的模型架構、learning rate的選擇、調整loss參數達到最佳的合成效果
@@ -104,7 +104,7 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
 ```
 
 ## 結果與討論
-> 為了加速訓練，使用VGG19 pre-training model過程中的參數不更新，經過迭代更新1000次後，其實合成出來的圖象已經達到不錯的效果，從調整α和β的比例關係來決定原圖來自style的成分多寡，下圖展示了設置 α=1 β=10 的風格圖
+> 為了加速訓練，使用VGG19 pre-training model過程中的參數不更新，經過迭代更新1000次後，其實合成出來的圖象已經達到不錯的效果，從調整α和β的權重來決定原圖偏向style的程度，下圖展示了設置不同 α和β的組合下產生的風格圖
 
 
 
