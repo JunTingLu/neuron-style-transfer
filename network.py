@@ -6,7 +6,6 @@ import torch
 #Assigning the GPU to the variable device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-vggoutput = namedtuple("vggoutput", ["relu1_2", "relu2_2", "relu3_2", "relu4_2"])
 model=models.vgg19(pretrained=True)
 
 # vgg layers
@@ -25,12 +24,13 @@ model=models.vgg19(pretrained=True)
 class VGG(nn.Module):
     def __init__(self):
         super(VGG,self).__init__() 
-            # '3': "relu1_2",
-            # '8': "relu2_2",
+            # '3':  "relu1_2",
+            # '8':  "relu2_2",
             # '13': "relu3_2",
             # '20': "relu4_2"
-        self.layer_names= ['3','8','13','20'] 
-        self.model=models.vgg19(pretrained=True).features[:29] #model will contain the first 29 layers       
+            # '29': "relu5_2"
+        self.layer_names= ['1','3','8','13','20','29'] 
+        self.model=models.vgg19(pretrained=True).features[:30] #model will contain the first 30 layers       
  
     def forward(self,x):
         features=[]
@@ -44,7 +44,7 @@ class VGG(nn.Module):
         return features
     
 
-# Resbet
+# Resnet
 # class ResidualBlock(nn.Module):
 #     def __init__(self):
 #         super(ResidualBlock, self).__init__()

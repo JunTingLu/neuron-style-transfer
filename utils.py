@@ -16,8 +16,28 @@ def calc_style_loss(gen,style):
     batch,channel,height,width=gen.shape
     G=torch.mm(gen.view(channel,height*width),gen.view(channel,height*width).t())
     A=torch.mm(style.view(channel,height*width),style.view(channel,height*width).t())
-    #Calcultating the style loss 
+    # Calculating the style loss (batch-normalization)
     style_l=torch.mean((G-A)**2) #/(4*channel*(height*width)**2)
+    # print(21,G.shape)
+
+    # instance normalization
+    # Reshape the tensors to (batch, channel, height * width)
+    # gen_reshaped = gen.view(batch, channel, height * width)
+    # style_reshaped = style.view(batch, channel, height * width)
+    
+    # # Calculate the mean and variance for each sample,we will get (batch, channel, 1)shape
+    # mean_G = torch.mean(gen_reshaped, dim=2, keepdim=True)
+    # mean_A = torch.mean(style_reshaped, dim=2, keepdim=True)
+    
+    # var_G = torch.var(gen_reshaped, dim=2, keepdim=True)
+    # var_A = torch.var(style_reshaped, dim=2, keepdim=True)
+    
+    # # Instance normalization for each sample
+    # G_normalized = (gen_reshaped - mean_G) / torch.sqrt(var_G + 1e-5)
+    # A_normalized = (style_reshaped - mean_A) / torch.sqrt(var_A + 1e-5)
+    
+    # # Calculate the style loss (instance normalization)
+    # style_l = torch.mean((G_normalized - A_normalized) ** 2) / (height * width)
     return style_l
 
 

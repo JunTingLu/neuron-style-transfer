@@ -9,11 +9,11 @@ with open("CNN_model.pth", "rb") as f:
     torch.load(model.state_dict(), f)
 
 #Loading the original and the style image
-original_image=image_loader("input/content/Sakura.jpg")
+original_image=image_loader("input/content/view.jpg")
 style_image=image_loader("input/style/vango.jpg")
 generated_image=original_image.clone().requires_grad_(True)
 optimizer=optim.Adam([generated_image],lr=0.004)
-epoch=400
+epoch=700
 
 for e in range (epoch):
     gen_features=model(generated_image) 

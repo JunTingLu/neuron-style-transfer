@@ -19,9 +19,8 @@ start_time = time.time()
 # Image resizing
 def image_loader(path):
     image=Image.open(path)
-    #defining the image transformation steps to be performed before feeding them to the model
     loader=transforms.Compose([transforms.Resize((512,512)),transforms.ToTensor()])
-    #The preprocessing steps involves resizing the image and then converting it to a tensor
+    #Converting it to a tensor
     image=loader(image).unsqueeze(0)
     return image.to(device,torch.float)
 
@@ -44,7 +43,7 @@ generated_image=original_image.clone().requires_grad_(True)
 #Update the generated image not the model parameter 
 lr=0.004
 optimizer=optim.Adam([generated_image],lr=lr)
-epoch=200
+epoch=1000
 
 # training 
 for e in range (epoch):
