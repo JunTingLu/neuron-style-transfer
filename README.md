@@ -23,7 +23,7 @@ def image_loader(path,is_cuda=False):
 ```
 
 - ## **模型架構**
-> 首先從模型架構來說，我採用VGG19的預訓練(pre-training)模型，直接利用前一大段的CNN架構來加快模型收斂時間。這裡只保留VGG前29層，其中把有需要處理的層別其對應的索引值分別為'1','3','8','13','20','29'(relu1_1,relu1_2,relu2_2,relu3_2,relu4_2,relu5_2)來提取特徵，原因是希望特徵在線性激活後更譨購抓出圖像中重要的部分，依序取出圖像的特徵(features)並存在feature box中，直觀上可以想像為了讓機器學會辨識一張圖像的特徵(例如:紋理、邊緣等等資訊)，在VGG模型中透過不同層濾波器(filter)所產生的不同特徵圖，又稱為feature map，而feature box就是收集這些feature map的過程。如下示意圖
+> 首先從模型架構來說，我採用VGG19的預訓練(pre-training)模型，直接利用前一大段的CNN架構來加快模型收斂時間。這裡只保留VGG前30層，其中把有需要處理的層別其對應的索引值分別為'1','3','8','13','20','29'(relu1_1,relu1_2,relu2_2,relu3_2,relu4_2,relu5_2)來提取特徵，原因是希望特徵在線性激活後更譨購抓出圖像中重要的部分，依序取出圖像的特徵(features)並存在feature box中，直觀上可以想像為了讓機器學會辨識一張圖像的特徵(例如:紋理、邊緣等等資訊)，在VGG模型中透過不同層濾波器(filter)所產生的不同特徵圖，又稱為feature map，而feature box就是收集這些feature map的過程。如下示意圖
 
 ![](https://upscfever.com/upsc-fever/en/data/deeplearning4/images/NST_LOSS.png)
 (引用自參考資料[4])
@@ -132,7 +132,7 @@ gen_img=origin_img.clone().requires_grad_(True)
 
 ![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/0f7d4503-5aba-4692-af6b-ba72faf16be8)
 
-> 另外，針對不同風格k效果在下圖展示了epoch=200設置不同α/β=0.01下產生的風格圖
+> 另外，針對不同風格k效果在下圖展示了epoch=7000設置α/β=0.01下產生的風格圖
 
 ![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/4afdc25c-0a50-4b0a-bdf2-0bcdb8de83ba)
 
