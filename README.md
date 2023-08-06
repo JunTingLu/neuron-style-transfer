@@ -128,7 +128,11 @@ gen_img=origin_img.clone().requires_grad_(True)
         optimizer.step() # update gen_img parameters
 ```
 
-> 經過迭代更新200次後，其實合成出來的圖象已經達到不錯的效果，由於α和β的權重來決定原圖偏向style的程度，若要使合成圖更多style的部分，除了調大調β同時也必須增價epoch的訓練回合才能達到預期的效果，下圖展示了設置不同α/β=0.01 下產生的風格圖
+> 經過迭代更新200次後，其實合成出來的圖象已經達到不錯的效果，由於α和β的權重來決定原圖偏向style的程度，若要使合成圖更多style的部分，除了調大調β同時也必須增價epoch的訓練回合才能達到預期的效果，可觀察到訓練7000回後，圖像主體的顏色及紋路出現大幅度改變，確實效果也更像梵谷星空圖風格了
+
+![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/0f7d4503-5aba-4692-af6b-ba72faf16be8)
+
+> 另外，針對不同風格k效果在下圖展示了epoch=200設置不同α/β=0.01下產生的風格圖
 
 ![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/5672cdbe-c77b-42fa-af02-d6661b15e2c4)
 
