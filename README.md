@@ -23,7 +23,7 @@ def image_loader(path,is_cuda=False):
 ```
 
 - ## **模型架構**
-> 首先從模型架構來說，我採用VGG19的預訓練(pre-training)模型，直接利用前一大段的CNN架構來加快模型收斂時間。這裡只保留VGG前29層，其中會使用到的四層分別來自relu1_2,relu2_2,relu3_2,relu4_2提取特徵，原因是希望特徵在線性激活後更譨購抓出圖像中重要的部分，依序取出圖像的特徵(features)並存在feature box中，直觀上可以想像為了讓機器學會辨識一張圖像的特徵(例如:紋理、邊緣等等資訊)，在VGG模型中透過不同層濾波器(filter)所產生的不同特徵圖，又稱為feature map，而feature box就是收集這些feature map的過程。如下示意圖
+> 首先從模型架構來說，我採用VGG19的預訓練(pre-training)模型，直接利用前一大段的CNN架構來加快模型收斂時間。這裡只保留VGG前29層，其中把有需要處理的層別其對應的索引值分別為'3','8','13','20'(relu1_2,relu2_2,relu3_2,relu4_2)來提取特徵，原因是希望特徵在線性激活後更譨購抓出圖像中重要的部分，依序取出圖像的特徵(features)並存在feature box中，直觀上可以想像為了讓機器學會辨識一張圖像的特徵(例如:紋理、邊緣等等資訊)，在VGG模型中透過不同層濾波器(filter)所產生的不同特徵圖，又稱為feature map，而feature box就是收集這些feature map的過程。如下示意圖
 
 ![](https://upscfever.com/upsc-fever/en/data/deeplearning4/images/NST_LOSS.png)
 (引用自參考資料[4])
@@ -110,8 +110,25 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
     return total_loss
 ```
 
-## 結果展示
-> 為了加速訓練，使用VGG19 pre-training model過程中的參數不更新，經過迭代更新200次後，其實合成出來的圖象已經達到不錯的效果，從調整α和β的權重來決定原圖偏向style的程度，下圖展示了設置不同α/β=0.01 下產生的風格圖
+## 訓練與結果展示
+>  整體來說，為求加速訓練，而非重頭去隨機產生我們要的合成圖，所以這裡採用origin_img.clone().requires_grad_(True)將原圖直接複製一份作為最終預產生合成圖的"範本"，而optimizer決定了"圖像"本身的訓練，而非"模型"，過程中不斷修正調整圖像的loss達到收斂，找到最佳的α和β的組合。
+
+```
+gen_img=origin_img.clone().requires_grad_(True)
+    optimizer=optim.Adam([gen_img],lr=opt.lr)
+    epoch=200
+    for e in range (epoch):
+        gen_features=model(gen_img) 
+        orig_features=model(origin_img)
+        style_features=model(style_img) 
+        total_loss=calculate_loss(gen_features, orig_features, style_features)
+        #optimize the pixel values of the generated image and back-propagate the loss
+        optimizer.zero_grad()
+        total_loss.backward()
+        optimizer.step() # update gen_img parameters
+```
+
+> 經過迭代更新200次後，其實合成出來的圖象已經達到不錯的效果，由於α和β的權重來決定原圖偏向style的程度，若要使合成圖更多style的部分，除了調大調β同時也必須增價epoch的訓練回合才能達到預期的效果，下圖展示了設置不同α/β=0.01 下產生的風格圖
 
 ![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/5672cdbe-c77b-42fa-af02-d6661b15e2c4)
 
