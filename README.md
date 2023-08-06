@@ -23,7 +23,7 @@ def image_loader(path,is_cuda=False):
 ```
 
 - ## **模型架構**
-> 首先從模型架構來說，我採用VGG19的預訓練(pre-training)模型，直接利用前一大段的CNN架構來加快模型收斂時間。這裡只保留VGG前29層，其中會使用到的四層分別來自relu1_2,relu2_2,relu3_2,relu4_2提取特徵，原因是希望特徵在線性激活後更譨購抓出圖像中重要的部分，依序取出圖像的特徵(features)並存在feature box中，直觀上可以想像為了讓機器學會辨識一張圖像的特徵(例如:紋理、邊緣等等資訊)，在VGG模型中透過不同層濾波器(filter)所產生的不同特徵圖，又稱為feature map，而feature box就是收集這些feature map的過程。如下示意圖
+> 首先從模型架構來說，我採用VGG19的預訓練(pre-training)模型，直接利用前一大段的CNN架構來加快模型收斂時間。這裡只保留VGG前30層[3]，其中把有需要處理的層別其對應的索引值分別為'1','3','8','13','20','29'(relu1_1,relu1_2,relu2_2,relu3_2,relu4_2,relu5_2)來提取特徵，原因是希望特徵在線性激活後更譨購抓出圖像中重要的部分，依序取出圖像的特徵(features)並存在feature box中，直觀上可以想像為了讓機器學會辨識一張圖像的特徵(例如:紋理、邊緣等等資訊)，在VGG模型中透過不同層濾波器(filter)所產生的不同特徵圖，又稱為feature map，而feature box就是收集這些feature map的過程。如下示意圖
 
 ![](https://upscfever.com/upsc-fever/en/data/deeplearning4/images/NST_LOSS.png)
 (引用自參考資料[4])
@@ -70,7 +70,8 @@ def calc_content_loss(gen_feat,orig_feat):
 ![](https://miro.medium.com/v2/resize:fit:490/format:webp/1*H1UW3bwrhqkRUJ11Xg6gGA.png)
 (引用自參考資料[1])
 
-![](https://ithelp.ithome.com.tw/upload/images/20230731/20158010TDpRsRF5Mt.png)(引用自參考資料[7])
+![](https://ithelp.ithome.com.tw/upload/images/20230731/20158010TDpRsRF5Mt.png)
+(引用自參考資料[7])
 
 
 > 將上述提及的cosine similarity推廣到圖像處理，相當於進一步計算圖像的特徵相關性分布，而這個分布形成的二維方陣稱作格拉姆矩陣(Gram matrix)，細節可參考[6]
@@ -109,13 +110,34 @@ def calculate_loss(gen_features, orig_feautes, style_featues):
     return total_loss
 ```
 
-## 結果與討論
-> 為了加速訓練，使用VGG19 pre-training model過程中的參數不更新，經過迭代更新200次後，其實合成出來的圖象已經達到不錯的效果，從調整α和β的權重來決定原圖偏向style的程度，下圖展示了設置不同α/β=0.01 下產生的風格圖
+## 訓練與結果展示
+>  整體來說，為求加速訓練，而非重頭去隨機產生我們要的合成圖，所以這裡採用origin_img.clone().requires_grad_(True)將原圖直接複製一份作為最終預產生合成圖的"範本"，而optimizer決定了"圖像"本身的訓練，而非"模型"，過程中不斷修正調整圖像的loss達到收斂，找到最佳的α和β的組合。
 
-![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/2695cd1b-6978-4549-825f-b7966cdb1478)
+```
+gen_img=origin_img.clone().requires_grad_(True)
+    optimizer=optim.Adam([gen_img],lr=opt.lr)
+    epoch=200
+    for e in range (epoch):
+        gen_features=model(gen_img) 
+        orig_features=model(origin_img)
+        style_features=model(style_img) 
+        total_loss=calculate_loss(gen_features, orig_features, style_features)
+        #optimize the pixel values of the generated image and back-propagate the loss
+        optimizer.zero_grad()
+        total_loss.backward()
+        optimizer.step() # update gen_img parameters
+```
+
+> 經過迭代更新200次後，其實合成出來的圖象已經達到不錯的效果，由於α和β的權重來決定原圖偏向style的程度，若要使合成圖更多style的部分，除了調大調β同時也必須增價epoch的訓練回合才能達到預期的效果，可觀察到訓練7000回後，圖像主體的顏色及紋路出現大幅度改變，確實效果也更像梵谷星空圖風格了
+
+![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/0f7d4503-5aba-4692-af6b-ba72faf16be8)
+
+> 另外，針對不同風格k效果在下圖展示了epoch=7000設置α/β=0.01下產生的風格圖
+
+![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/4afdc25c-0a50-4b0a-bdf2-0bcdb8de83ba)
 
 
-最後，完整代碼可參考操考資料[5]，歡迎互相交流，不吝指教~
+最後，完整代碼可參考操考資料[5]，歡迎互相交流，不吝指教
 
 ### 參考資料
 > 1. [Neural Networks Intuitions](https://towardsdatascience.com/neural-networks-intuitions-2-dot-product-gram-matrix-and-neural-style-transfer-5d39653e7916)
