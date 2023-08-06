@@ -134,11 +134,10 @@ gen_img=origin_img.clone().requires_grad_(True)
 
 > 另外，針對不同風格k效果在下圖展示了epoch=200設置不同α/β=0.01下產生的風格圖
 
-![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/5672cdbe-c77b-42fa-af02-d6661b15e2c4)
+![image](https://github.com/JunTingLu/neuron-style-transfer/assets/135250298/4afdc25c-0a50-4b0a-bdf2-0bcdb8de83ba)
 
 
-
-最後，完整代碼可參考操考資料[5]，歡迎互相交流，不吝指教~
+最後，完整代碼可參考操考資料[5]，歡迎互相交流，不吝指教
 
 ### 參考資料
 > 1. [Neural Networks Intuitions](https://towardsdatascience.com/neural-networks-intuitions-2-dot-product-gram-matrix-and-neural-style-transfer-5d39653e7916)
